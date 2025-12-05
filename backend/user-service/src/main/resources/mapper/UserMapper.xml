@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toolrecommend.user.mapper.UserMapper">
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectByUsername" resultType="com.toolrecommend.common.entity.User">
+        SELECT *
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <!-- 根据邮箱查询用户 -->
+    <select id="selectByEmail" resultType="com.toolrecommend.common.entity.User">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <!-- 根据手机号查询用户 -->
+    <select id="selectByPhone" resultType="com.toolrecommend.common.entity.User">
+        SELECT *
+        FROM user
+        WHERE phone = #{phone}
+    </select>
+
+    <!-- 根据账号查询用户 -->
+    <select id="selectByAccount" resultType="com.toolrecommend.common.entity.User">
+        SELECT *
+        FROM user
+        WHERE username = #{account}
+           OR email = #{account}
+           OR phone = #{account}
+        LIMIT 1
+    </select>
+
+    <!-- 更新最后登录信息 -->
+    <update id="updateLastLogin">
+        UPDATE user
+        SET last_login_at = NOW(),
+            last_login_ip = #{ip}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toolrecommend.tool.mapper.TagMapper">
+
+    <!-- 根据工具ID查询标签列表 -->
+    <select id="selectTagsByToolId" resultType="com.toolrecommend.common.entity.Tag">
+        SELECT t.*
+        FROM tag t
+        INNER JOIN tool_tag tt ON t.id = tt.tag_id
+        WHERE tt.tool_id = #{toolId}
+        ORDER BY t.usage_count DESC
+    </select>
+
+    <!-- 查询热门标签 -->
+    <select id="selectHotTags" resultType="com.toolrecommend.common.entity.Tag">
+        SELECT *
+        FROM tag
+        ORDER BY usage_count DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 增加标签使用次数 -->
+    <update id="incrementUsageCount">
+        UPDATE tag
+        SET usage_count = usage_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <!-- 减少标签使用次数 -->
+    <update id="decrementUsageCount">
+        UPDATE tag
+        SET usage_count = usage_count - 1
+        WHERE id = #{id}
+        AND usage_count > 0
+    </update>
+
+</mapper>
