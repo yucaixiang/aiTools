@@ -5,7 +5,7 @@ import com.toolrecommend.common.vo.CategoryVO;
 import com.toolrecommend.tool.service.CategoryService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 /**

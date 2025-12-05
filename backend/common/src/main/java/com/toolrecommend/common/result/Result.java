@@ -34,39 +34,6 @@ public class Result<T> implements Serializable {
      */
     private Long timestamp;
 
-    // Getter 和 Setter 方法（Lombok @Data 会自动生成，这里手动添加以确保编译通过）
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     /**
      * 成功返回（无数据）
      */

@@ -10,7 +10,7 @@ import com.toolrecommend.tool.service.ToolService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 
 /**
@@ -64,7 +64,7 @@ public class ToolController {
      * 更新工具
      */
     @PutMapping("/{id}")
-    public Result<Void> updateTool(
+    public Result<String> updateTool(
             @PathVariable Long id,
             @Validated @RequestBody ToolCreateDTO updateDTO,
             @RequestHeader("User-Id") Long userId) {
@@ -76,7 +76,7 @@ public class ToolController {
      * 删除工具
      */
     @DeleteMapping("/{id}")
-    public Result<Void> deleteTool(
+    public Result<String> deleteTool(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = toolService.deleteTool(id, userId);
@@ -87,7 +87,7 @@ public class ToolController {
      * 点赞工具
      */
     @PostMapping("/{id}/upvote")
-    public Result<Void> upvoteTool(
+    public Result<String> upvoteTool(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = toolService.upvoteTool(id, userId);
@@ -98,7 +98,7 @@ public class ToolController {
      * 取消点赞
      */
     @DeleteMapping("/{id}/upvote")
-    public Result<Void> cancelUpvote(
+    public Result<String> cancelUpvote(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = toolService.cancelUpvote(id, userId);
@@ -109,7 +109,7 @@ public class ToolController {
      * 收藏工具
      */
     @PostMapping("/{id}/favorite")
-    public Result<Void> favoriteTool(
+    public Result<String> favoriteTool(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = toolService.favoriteTool(id, userId);
@@ -120,7 +120,7 @@ public class ToolController {
      * 取消收藏
      */
     @DeleteMapping("/{id}/favorite")
-    public Result<Void> cancelFavorite(
+    public Result<String> cancelFavorite(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = toolService.cancelFavorite(id, userId);

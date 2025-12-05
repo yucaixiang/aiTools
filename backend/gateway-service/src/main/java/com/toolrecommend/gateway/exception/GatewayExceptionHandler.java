@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -38,11 +39,11 @@ public class GatewayExceptionHandler implements ErrorWebExceptionHandler {
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
         Result<Void> result;
-        HttpStatus status;
+        HttpStatusCode status;
 
         if (ex instanceof ResponseStatusException) {
             ResponseStatusException rse = (ResponseStatusException) ex;
-            status = rse.getStatus();
+            status = rse.getStatusCode();
             result = Result.error(status.value(), rse.getReason());
             log.error("网关异常: {}", rse.getReason());
         } else {

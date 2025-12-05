@@ -7,7 +7,7 @@ import com.toolrecommend.common.vo.ToolVO;
 import com.toolrecommend.admin.service.AdminToolService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.Map;
 
 /**

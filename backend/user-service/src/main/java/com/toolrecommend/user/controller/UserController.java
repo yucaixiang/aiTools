@@ -9,8 +9,8 @@ import com.toolrecommend.user.service.UserService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 用户控制器
@@ -74,7 +74,7 @@ public class UserController {
      * 更新用户信息
      */
     @PutMapping("/{id}")
-    public Result<Void> updateUser(
+    public Result<String> updateUser(
             @PathVariable Long id,
             @RequestBody UserVO userVO,
             @RequestHeader("User-Id") Long currentUserId) {
@@ -92,7 +92,7 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/{id}/change-password")
-    public Result<Void> changePassword(
+    public Result<String> changePassword(
             @PathVariable Long id,
             @RequestParam String oldPassword,
             @RequestParam String newPassword,

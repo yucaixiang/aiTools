@@ -8,7 +8,7 @@ import com.toolrecommend.review.service.ReviewService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +39,7 @@ public class ReviewController {
      * 更新评论
      */
     @PutMapping("/{id}")
-    public Result<Void> updateReview(
+    public Result<String> updateReview(
             @PathVariable Long id,
             @Validated @RequestBody ReviewCreateDTO updateDTO,
             @RequestHeader("User-Id") Long userId) {
@@ -51,7 +51,7 @@ public class ReviewController {
      * 删除评论
      */
     @DeleteMapping("/{id}")
-    public Result<Void> deleteReview(
+    public Result<String> deleteReview(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = reviewService.deleteReview(id, userId);
@@ -97,7 +97,7 @@ public class ReviewController {
      * 标记评论有帮助
      */
     @PostMapping("/{id}/helpful")
-    public Result<Void> markHelpful(
+    public Result<String> markHelpful(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = reviewService.markHelpful(id, userId);
@@ -108,7 +108,7 @@ public class ReviewController {
      * 取消有帮助标记
      */
     @DeleteMapping("/{id}/helpful")
-    public Result<Void> unmarkHelpful(
+    public Result<String> unmarkHelpful(
             @PathVariable Long id,
             @RequestHeader("User-Id") Long userId) {
         boolean success = reviewService.unmarkHelpful(id, userId);
