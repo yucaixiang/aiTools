@@ -102,7 +102,7 @@ frontend/uniapp/
 
 ## 🔧 API配置
 
-API请求通过网关统一访问：`http://localhost:8080`
+API请求通过网关统一访问：`http://localhost:8090`
 
 主要接口：
 - `/api/tools/**` - 工具相关

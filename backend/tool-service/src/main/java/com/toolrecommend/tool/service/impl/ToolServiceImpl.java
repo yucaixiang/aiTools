@@ -310,7 +310,7 @@ public class ToolServiceImpl implements ToolService {
         // 先从缓存获取
         @SuppressWarnings("unchecked")
         List<ToolVO> cachedTools = (List<ToolVO>) redisTemplate.opsForValue().get(HOT_TOOLS_CACHE_KEY);
-        if (cachedTools != null) {
+        if (cachedTools != null && !cachedTools.isEmpty()) {
             return cachedTools.stream().limit(limit).collect(Collectors.toList());
         }
 

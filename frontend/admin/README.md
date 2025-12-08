@@ -121,7 +121,7 @@ admin/
 
 ### API代理配置
 
-开发环境下，所有 `/api` 开头的请求会被代理到 `http://localhost:8080`
+开发环境下，所有 `/api` 开头的请求会被代理到 `http://localhost:8090`
 
 配置位置: `vite.config.js`
 
@@ -130,7 +130,7 @@ server: {
   port: 3001,
   proxy: {
     '/api': {
-      target: 'http://localhost:8080',
+      target: 'http://localhost:8090',
       changeOrigin: true
     }
   }
@@ -183,7 +183,7 @@ server: {
 
 ## 注意事项
 
-1. 确保后端服务已启动在 `http://localhost:8080`
+1. 确保后端服务已启动在 `http://localhost:8090`
 2. 确保数据库已初始化并包含必要的数据
 3. Token存储在 `localStorage` 中，键名为 `admin_token`
 4. 用户信息存储在 `localStorage` 中，键名为 `admin_user`
