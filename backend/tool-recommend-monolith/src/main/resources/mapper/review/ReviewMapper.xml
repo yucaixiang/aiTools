@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toolrecommend.review.mapper.ReviewMapper">
+
+    <!-- 分页查询工具评论 -->
+    <select id="selectByToolId" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE tool_id = #{toolId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY helpful_count DESC, created_at DESC
+    </select>
+
+    <!-- 查询用户评论列表 -->
+    <select id="selectByUserId" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 查询工具的热门评论 -->
+    <select id="selectHotReviews" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE tool_id = #{toolId}
+        AND status = 1
+        AND parent_id IS NULL
+        ORDER BY helpful_count DESC, created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <!-- 检查用户是否已评论过该工具 -->
+    <select id="selectByToolIdAndUserId" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE tool_id = #{toolId}
+        AND user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <!-- 增加有帮助数 -->
+    <update id="incrementHelpfulCount">
+        UPDATE review
+        SET helpful_count = helpful_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <!-- 减少有帮助数 -->
+    <update id="decrementHelpfulCount">
+        UPDATE review
+        SET helpful_count = helpful_count - 1
+        WHERE id = #{id}
+        AND helpful_count > 0
+    </update>
+
+    <!-- 统计工具的评分分布（已弃用，评分已迁移到rating表） -->
+    <select id="selectRatingDistribution" resultType="java.util.Map">
+        SELECT
+            1 as rating,
+            0 as count
+        FROM dual
+        WHERE 1=0
+    </select>
+
+    <!-- 查询工具的顶级评论（parent_id IS NULL） -->
+    <select id="selectTopLevelReviews" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE tool_id = #{toolId}
+        AND parent_id IS NULL
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY helpful_count DESC, created_at DESC
+    </select>
+
+    <!-- 查询某条评论的回复列表（分页） -->
+    <select id="selectRepliesByParentId" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE parent_id = #{parentId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY created_at ASC
+    </select>
+
+    <!-- 查询某条评论的所有回复（不分页） -->
+    <select id="selectAllRepliesByParentId" resultType="com.toolrecommend.common.entity.Review">
+        SELECT *
+        FROM review
+        WHERE parent_id = #{parentId}
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY created_at ASC
+    </select>
+
+    <!-- 增加回复数 -->
+    <update id="incrementReplyCount">
+        UPDATE review
+        SET reply_count = reply_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <!-- 减少回复数 -->
+    <update id="decrementReplyCount">
+        UPDATE review
+        SET reply_count = reply_count - 1
+        WHERE id = #{id}
+        AND reply_count > 0
+    </update>
+
+</mapper>

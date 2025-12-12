@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toolrecommend.submission.mapper.ToolSubmissionMapper">
+
+    <!-- 分页查询工具提交列表（包含用户、分类信息） -->
+    <select id="selectSubmissionsWithDetails" resultType="com.toolrecommend.common.vo.ToolSubmissionVO">
+        SELECT
+            ts.id,
+            ts.user_id AS userId,
+            u.username,
+            ts.name,
+            ts.tagline,
+            ts.description,
+            ts.website_url AS websiteUrl,
+            ts.logo_url AS logoUrl,
+            ts.category_id AS categoryId,
+            c.name AS categoryName,
+            ts.pricing_model AS pricingModel,
+            ts.launch_date AS launchDate,
+            ts.status,
+            CASE ts.status
+                WHEN 0 THEN '待审核'
+                WHEN 1 THEN '已通过'
+                WHEN 2 THEN '已拒绝'
+                ELSE '未知'
+            END AS statusDesc,
+            ts.review_comment AS reviewComment,
+            ts.reviewed_at AS reviewedAt,
+            ts.reviewed_by AS reviewedBy,
+            ts.created_at AS createdAt,
+            ts.updated_at AS updatedAt
+        FROM tool_submission ts
+        LEFT JOIN user u ON ts.user_id = u.id
+        LEFT JOIN category c ON ts.category_id = c.id
+        <where>
+            <if test="status != null">
+                AND ts.status = #{status}
+            </if>
+            <if test="userId != null">
+                AND ts.user_id = #{userId}
+            </if>
+        </where>
+        ORDER BY ts.created_at DESC
+    </select>
+
+    <!-- 根据ID查询提交详情（包含用户、分类、审核人信息） -->
+    <select id="selectSubmissionDetailById" resultType="com.toolrecommend.common.vo.ToolSubmissionVO">
+        SELECT
+            ts.id,
+            ts.user_id AS userId,
+            u.username,
+            ts.name,
+            ts.tagline,
+            ts.description,
+            ts.website_url AS websiteUrl,
+            ts.logo_url AS logoUrl,
+            ts.category_id AS categoryId,
+            c.name AS categoryName,
+            ts.pricing_model AS pricingModel,
+            ts.launch_date AS launchDate,
+            ts.status,
+            CASE ts.status
+                WHEN 0 THEN '待审核'
+                WHEN 1 THEN '已通过'
+                WHEN 2 THEN '已拒绝'
+                ELSE '未知'
+            END AS statusDesc,
+            ts.review_comment AS reviewComment,
+            ts.reviewed_at AS reviewedAt,
+            ts.reviewed_by AS reviewedBy,
+            reviewer.username AS reviewerName,
+            ts.created_at AS createdAt,
+            ts.updated_at AS updatedAt
+        FROM tool_submission ts
+        LEFT JOIN user u ON ts.user_id = u.id
+        LEFT JOIN category c ON ts.category_id = c.id
+        LEFT JOIN user reviewer ON ts.reviewed_by = reviewer.id
+        WHERE ts.id = #{id}
+    </select>
+
+    <!-- 统计待审核提交数量 -->
+    <select id="countPendingSubmissions" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM tool_submission
+        WHERE status = 0
+    </select>
+
+</mapper>

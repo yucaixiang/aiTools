@@ -22,7 +22,19 @@
       "Bash(git init:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(mysql:*)",
+      "Bash(python3:*)",
+      "Bash(./kill-service-ports.sh:*)",
+      "Bash(/Users/bjsttlp324/Desktop/tools/backend/merge-to-monolith.sh)",
+      "Bash(mvn clean:*)",
+      "Bash(mvn spring-boot:run:*)",
+      "Bash(javap:*)",
+      "Bash(kill:*)",
+      "Bash(sh:*)",
+      "Bash(java -version:*)"
     ],
     "deny": [],
     "ask": []

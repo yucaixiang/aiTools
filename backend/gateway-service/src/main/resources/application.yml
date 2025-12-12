@@ -10,13 +10,13 @@ spring:
 
   cloud:
     gateway:
-      # 路由配置
+      # 路由配置 - 简化为单体应用路由
       routes:
-        # 工具服务路由
-        - id: tool-service
-          uri: http://localhost:8081
+        # 单体应用路由 - 所有API请求都转发到monolith
+        - id: monolith-service
+          uri: http://localhost:8080
           predicates:
-            - Path=/api/tools/**,/api/categories/**
+            - Path=/api/**
           filters:
             - StripPrefix=0
             - name: RequestRateLimiter
@@ -25,46 +25,13 @@ spring:
                 redis-rate-limiter.burstCapacity: 20  # 令牌桶容量
                 key-resolver: "#{@ipKeyResolver}"
 
-        # 用户服务路由
-        - id: user-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/users/**
-          filters:
-            - StripPrefix=0
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
-                key-resolver: "#{@ipKeyResolver}"
-
-        # AI服务路由
-        - id: ai-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/ai/**
-          filters:
-            - StripPrefix=0
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 5   # AI服务限流更严格
-                redis-rate-limiter.burstCapacity: 10
-                key-resolver: "#{@ipKeyResolver}"
-
-        # 评论服务路由
-        - id: review-service
-          uri: http://localhost:8084
-          predicates:
-            - Path=/api/reviews/**
-          filters:
-            - StripPrefix=0
-
       # 全局CORS配置
       globalcors:
         cors-configurations:
           '[/**]':
             allowed-origins:
               - "http://localhost:3000"
+              - "http://localhost:3001"
               - "http://localhost:8090"
               - "http://localhost:8081"
               - "http://localhost:8082"
@@ -98,8 +65,11 @@ jwt:
   secret: tool-recommend-secret-key-2024-should-be-very-long-and-secure
 
 # 鉴权白名单（不需要Token的接口，逗号分隔）
+# 注意: /api/tools/** 和 /api/categories/** 不需要登录即可访问（游客可查看工具列表和详情）
+# 注意: /api/reviews/tool/** 不需要登录即可访问（游客可查看评论）
+# 注意: 收藏、点赞、写评论等操作需要登录
 auth:
-  whitelist: /api/users/register,/api/users/login,/api/users/refresh-token,/api/users/check-username,/api/users/check-email,/api/tools/hot,/api/tools/latest,/api/tools/search,/api/tools/query,/api/categories/**,/actuator/**
+  whitelist: /api/users/register,/api/users/login,/api/users/refresh-token,/api/users/check-username,/api/users/check-email,/api/tools,/api/tools/*/detail,/api/tools/search,/api/tools/category/*,/api/categories,/api/categories/*,/api/reviews/tool/*,/actuator/**
 
 management:
   endpoints:

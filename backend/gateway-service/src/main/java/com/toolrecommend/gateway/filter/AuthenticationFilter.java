@@ -72,7 +72,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
 
             // 将用户信息添加到请求头，传递给下游服务
             ServerHttpRequest modifiedRequest = request.mutate()
-                    .header("User-Id", String.valueOf(userId))
+                    .header("X-User-Id", String.valueOf(userId))
+                    .header("User-Id", String.valueOf(userId))  // 兼容旧版本
                     .header("Username", username)
                     .header("User-Role", role)
                     .build();
